@@ -65,7 +65,7 @@ def svix_squared(cdf):
     taurf = cdf.maturity_years * cdf.forward
     otm_grid = np.where(cdf.grid <= cdf.forward, cdf.put_grid, cdf.call_grid)
     integral = np.trapezoid(otm_grid, cdf.grid)
-    return 2.0 * integral / taurf
+    return float(2.0 * integral / taurf)
 
     ## TODO: Implement this function as specified in the docstring above.
     raise NotImplementedError("Implement svix_squared (see HOMEWORK INSTRUCTIONS at the top of this file)")
