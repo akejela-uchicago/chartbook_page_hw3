@@ -177,9 +177,8 @@ def risk_neutral_cdf(surface_slice, rate, n_grid=N_GRID):
     ## todo: Breeden-Litzenberger. Compute `q_raw`, the raw risk-neutral CDF on
     ## the grid, from the slope of the call curve in the strike. The docstring
     ## above states the formula; `np.gradient(call_grid, grid)` is the slope.
-    forward = 1 + np.exp(rate * maturity_years)
     call_slope = np.gradient(call_grid, grid)
-    q_raw = 1 + forward * call_slope
+    q_raw = 1 + np.exp(rate * maturity_years) * call_slope
 
     # if q_raw is None:
     #     raise NotImplementedError(
