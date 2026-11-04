@@ -23,7 +23,12 @@ description = "From settlement prices to the simple variance swap rate, the risk
 path = "_output/02_svix_and_crash_probability_ipynb.ipynb"
 
 
-# TODO: Register the monitor notebook, `03_daily_monitor_ipynb`, following
+[notebooks.03_daily_monitor_ipynb]
+name = "Replicating SVIX and the Probability of a Crash"
+description = "Pulls the latest session and appends a new row to the monitor database."
+path = "_output/03_daily_monitor_ipynb.ipynb"
+
+# todo: Register the monitor notebook, `03_daily_monitor_ipynb`, following
 # the two entries above: a name, a description, and the path of the executed
 # notebook that `doit` leaves in `_output/`.
 
@@ -52,6 +57,22 @@ which is why they, and not daily bars, feed the smile. `doit` pulls the
 window in the settings again when it changes; `doit latest` pulls the most
 recent session."""
 
+[dataframes.svix_monitor_history]
+name = "SVIX Monitor History"
+description = "One row per session: the 30-day SVIX index, the SVIX^2 of the two bracketing end-of-month expirations, the risk-neutral, log-utility, and power-utility probabilities of a 20% and a 10% drop in the S&P 500, and the Cboe VIX close"
+path = "_output/svix_monitor_history.csv"
+date_col = "date"
+tags = ["Options", "Volatility", "Monitor"]
+pull_method = "Computed from the Databento settlements and the FRED series by src/monitor.py (doit compute_history, or doit latest for one session)"
+docs = """The monitor's history: each row is one
+session's settlement prices turned into Martin's (2017) quantities. 
+This is the one output kept between runs rather than rebuilt: recomputing it
+would cost one Databento pull per session. The deploy workflow restores it
+from the `monitor-history` branch, appends the new session, and commits it
+back there, so the chart gains one point a day while `main` holds only
+source code. A session already in the file is never recomputed, so the
+backfill (`START_DATE=... uv run doit`) and the daily update can be run in
+any order."""
 
 # TODO: Register the monitor's history as `[dataframes.svix_monitor_history]`,
 # following the entry above. It is the CSV in `_output/` that
